@@ -1,6 +1,13 @@
-FROM python:3.7
-COPY . /app
+FROM python:3.11-slim
+
 WORKDIR /app
-RUN pip install -r requirements.txt
-EXPOSE $PORT
+
+COPY requirements.txt .
+
+RUN python -m pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 10000
+
 CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-10000} app:app"]
